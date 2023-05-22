@@ -1,0 +1,63 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xb970026B8455776F803F89c37C5c7468a1DC50d3"
+      abi: Contract
+      startBlock: 16220660
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - BeaconUpgraded
+        - BlockMaxThresholdSet
+        - GalaWalletAddressSet
+        - ImportantAddressSet
+        - Initialized
+        - OwnershipTransferred
+        - Paused
+        - PaymentBurnErc1155Executed
+        - PaymentBurnExecuted
+        - PaymentExecuted
+        - PaymentTransferExecuted
+        - Unpaused
+        - Upgraded
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: BlockMaxThresholdSet(uint256)
+          handler: handleBlockMaxThresholdSet
+        - event: GalaWalletAddressSet(address)
+          handler: handleGalaWalletAddressSet
+        - event: ImportantAddressSet(address)
+          handler: handleImportantAddressSet
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Paused(address)
+          handler: handlePaused
+        - event: PaymentBurnErc1155Executed(string,address,uint256,uint256,uint256)
+          handler: handlePaymentBurnErc1155Executed
+        - event: PaymentBurnExecuted(string,address,uint256,uint256)
+          handler: handlePaymentBurnExecuted
+        - event: PaymentExecuted(string,uint256,uint256)
+          handler: handlePaymentExecuted
+        - event: PaymentTransferExecuted(string,address,uint256,uint256)
+          handler: handlePaymentTransferExecuted
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/contract.ts
