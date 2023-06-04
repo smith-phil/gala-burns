@@ -28,9 +28,9 @@ type ERC20Token @entity {
 }
 
 type ERC20Burn @entity {
-  id: String! # <transaction hash>
+  id: String! # <transaction hash>-<event log index>
   amount: BigInt!
-  orderId: String # <order id> only present for pay and burn events
+  orderId: String!
   token: ERC20Token!
   blockNumber: BigInt!
   transactionHash: Bytes!
@@ -42,4 +42,18 @@ type ERC20TotalBurned @entity {
   totalBurned: BigInt!
   timestamp: BigInt!
   blockNumber: BigInt!
+}
+
+type ERC1155Token @entity {
+  	id: Bytes!
+    contract: Bytes!
+    identifier: BigInt!
+    uri: String
+}
+
+type ERC1155BurnSnapShot @entity {
+  id: ID!
+  token: ERC1155Token!
+  totalBurned: BigInt!
+  numberOfBurns: Int!
 }

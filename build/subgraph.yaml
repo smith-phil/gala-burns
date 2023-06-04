@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: Contract
@@ -17,10 +17,10 @@ dataSources:
         - PaymentBurnExecuted
       abis:
         - name: Contract
-          file: ./abis/Contract.json
+          file: Contract/abis/Contract.json
         - name: IERC20Metadata
-          file: ./abis/IERC20Metadata.json
+          file: Contract/abis/IERC20Metadata.json
       eventHandlers:
         - event: PaymentBurnExecuted(string,address,uint256,uint256)
           handler: handlePaymentBurnExecuted
-      file: ./src/contract.ts
+      file: Contract/Contract.wasm
