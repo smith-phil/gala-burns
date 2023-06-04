@@ -1,6 +1,6 @@
 
 type ERC20BurnHourlySnapShot @entity {
-  " { # of hours since Unix epoch time } "
+  " { The number of hours since Unix epoch time } "
   id: ID! 
   token: ERC20Token!
   total: BigInt!
@@ -10,7 +10,7 @@ type ERC20BurnHourlySnapShot @entity {
 }
 
 type ERC20BurnDailySnapShot @entity {
-  " { # of days since Unix epoch time } "
+  " { The number of days since Unix epoch time } "
   id: ID! 
   token: ERC20Token!
   total: BigInt!
@@ -29,7 +29,8 @@ type ERC20Token @entity {
 }
 
 type ERC20Burn @entity {
-  id: String! # <transaction hash>
+  " { The transaction hash for the burn } "
+  id: String! 
   amount: BigInt!
   orderId: String # <order id> only present for pay and burn events
   token: ERC20Token!
@@ -38,7 +39,8 @@ type ERC20Burn @entity {
 }
 
 type ERC20TotalBurned @entity {
-  id: Bytes! #contract address
+  " { The contract address for the token burned } "
+  id: Bytes! 
   token: ERC20Token!
   totalBurned: BigInt!
   timestamp: BigInt!
