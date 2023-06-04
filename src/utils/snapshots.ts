@@ -5,6 +5,27 @@ import { ethereum, BigInt } from "@graphprotocol/graph-ts";
 import { getOrCreateERC20Token } from "./erc20";
 import { Transfer } from "../../generated/ERC20/IERC20Metadata";
 
+/**
+ * createDailySnapshotID
+ * Creates a new daily snapshot ID
+ * @param block: The block to use in the ID
+ * @returns string
+ */
+function createDailySnapshotID(block: ethereum.Block): string {
+    let id = block.timestamp.toI32() / SECONDS_PER_DAY
+    return id.toString()
+}
+
+/**
+ * createHourlySnapshotID
+ * Creates a new hourly snapshot ID
+ * @param block: The block to use in the ID
+ * @returns string
+ */
+function createHourlySnapshotID(block: ethereum.Block): string {
+    let id = block.timestamp.toI32() / SECONDS_PER_HOUR
+    return id.toString()
+}
 
 /**
  * createERC20BurnHourlySnapshot
@@ -14,7 +35,7 @@ import { Transfer } from "../../generated/ERC20/IERC20Metadata";
  * @returns ERC20BurnHourlySnapShot entity
  */
 function createERC20BurnHourlySnapshot(token: ERC20Token, block: ethereum.Block): ERC20BurnHourlySnapShot {
-    const snapshot = new ERC20BurnHourlySnapShot(block.timestamp.toI32() / SECONDS_PER_HOUR + "")
+    const snapshot = new ERC20BurnHourlySnapShot(createHourlySnapshotID(block))
     snapshot.token = token.id
     snapshot.total = BIGINT_ZERO
     snapshot.numberOfBurns = 0
@@ -32,8 +53,7 @@ function createERC20BurnHourlySnapshot(token: ERC20Token, block: ethereum.Block)
  * @returns ERC20BurnHourlySnapShot entity
  */
 export function getOrCreateERC20BurnHourlySnapshotFromPayBurn(event: PaymentBurnExecuted): ERC20BurnHourlySnapShot {
-    let id = event.block.timestamp.toI32() / SECONDS_PER_HOUR + ""
-    let snapshot = ERC20BurnHourlySnapShot.load(id)
+    let snapshot = ERC20BurnHourlySnapShot.load(createHourlySnapshotID(event.block))
     if (snapshot == null) {
         snapshot = createERC20BurnHourlySnapshot(getOrCreateERC20Token(event.params.token), event.block)
     }
@@ -48,8 +68,7 @@ export function getOrCreateERC20BurnHourlySnapshotFromPayBurn(event: PaymentBurn
  * @returns ERC20BurnHourlySnapShot entity
  */
 export function getOrCreateERC20BurnHourlySnapshotFromTransfer(event: Transfer): ERC20BurnHourlySnapShot {
-    let id = event.block.timestamp.toI32() / SECONDS_PER_HOUR + ""
-    let snapshot = ERC20BurnHourlySnapShot.load(id)
+    let snapshot = ERC20BurnHourlySnapShot.load(createHourlySnapshotID(event.block))
     if (snapshot == null) {
         snapshot = createERC20BurnHourlySnapshot(getOrCreateERC20Token(event.address), event.block)
     }
@@ -105,7 +124,7 @@ function updateERC20BurnHourlySnapshot(snapshot: ERC20BurnHourlySnapShot, block:
  * @returns ERC20BurnDailySnapShot entity
  */
 function createERC20BurnDailySnapshot(token: ERC20Token, block: ethereum.Block): ERC20BurnDailySnapShot {
-    const snapshot = new ERC20BurnDailySnapShot(block.timestamp.toI32() / SECONDS_PER_DAY + "")
+    const snapshot = new ERC20BurnDailySnapShot(createDailySnapshotID(block))
     snapshot.token = token.id
     snapshot.total = BIGINT_ZERO
     snapshot.numberOfBurns = 0
@@ -123,8 +142,7 @@ function createERC20BurnDailySnapshot(token: ERC20Token, block: ethereum.Block):
  * @returns ERC20BurnDailySnapShot entity
  */
 export function getOrCreateERC20BurnDailySnapshotFromPayBurn(event: PaymentBurnExecuted): ERC20BurnDailySnapShot {
-    let id = event.block.timestamp.toI32() / SECONDS_PER_DAY + ""
-    let snapshot = ERC20BurnDailySnapShot.load(id)
+    let snapshot = ERC20BurnDailySnapShot.load(createDailySnapshotID(event.block))
     if (snapshot == null) {
         snapshot = createERC20BurnDailySnapshot(getOrCreateERC20Token(event.params.token), event.block)
     }
@@ -139,8 +157,7 @@ export function getOrCreateERC20BurnDailySnapshotFromPayBurn(event: PaymentBurnE
  * @returns ERC20BurnDailySnapShot entity
  */
 export function getOrCreateERC20BurnDailySnapshotFromTransfer(event: Transfer): ERC20BurnDailySnapShot {
-    let id = event.block.timestamp.toI32() / SECONDS_PER_DAY + ""
-    let snapshot = ERC20BurnDailySnapShot.load(id)
+    let snapshot = ERC20BurnDailySnapShot.load(createDailySnapshotID(event.block))
     if (snapshot == null) {
         snapshot = createERC20BurnDailySnapshot(getOrCreateERC20Token(event.address), event.block)
     }
