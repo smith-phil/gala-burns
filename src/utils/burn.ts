@@ -18,7 +18,8 @@ export function createERC20Burn(event: ethereum.Event, token: Address): ERC20Bur
     burn.amount = BIGINT_ZERO
     burn.orderId = ""
     burn.token = token
-    burn.blockNumber = BIGINT_ZERO
+    burn.blockNumber = event.block.number
+    burn.transactionHash = event.transaction.hash
     burn.save()
     return burn as ERC20Burn
 }
