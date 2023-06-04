@@ -4,10 +4,10 @@ import { IERC20Metadata as ERC20Contract } from "../../generated/ERC20/IERC20Met
 
 
 export function getOrCreateERC20Token(address: Address): ERC20Token {
-  let token = ERC20Token.load(address.toHexString())
+  let token = ERC20Token.load(address)
   if (token == null) {
     let tokenContract = ERC20Contract.bind(address)
-    token = new ERC20Token(address.toHexString())
+    token = new ERC20Token(address)
     token.name = tokenContract.name()
     token.symbol = tokenContract.symbol()
     token.decimals = tokenContract.decimals()

@@ -20,7 +20,8 @@ type ERC20BurnDailySnapShot @entity {
 }
 
 type ERC20Token @entity {
-  id: ID! #contract address
+  " { The contract address of the token } "
+  id: Bytes! 
   name: String!
   symbol: String!
   decimals: Int!
