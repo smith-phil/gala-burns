@@ -10,13 +10,14 @@ import { Transfer } from "../../generated/ERC20/IERC20Metadata"
  * createERC20Burn
  * Creates a new ERC20Burn entity
  * @param event the event that triggered the update
+ * @param token: The token to create the ERC20Burn for
  * @returns ERC20Burn entity
  */
-export function createERC20Burn(event: ethereum.Event): ERC20Burn {
+export function createERC20Burn(event: ethereum.Event, token: Address): ERC20Burn {
     const burn = new ERC20Burn(event.transaction.hash.toHexString())
     burn.amount = BIGINT_ZERO
     burn.orderId = ""
-    burn.token = ""
+    burn.token = token
     burn.blockNumber = BIGINT_ZERO
     burn.save()
     return burn as ERC20Burn
@@ -28,7 +29,7 @@ export function createERC20Burn(event: ethereum.Event): ERC20Burn {
  * @param event: The transfer event that triggered the update
  */
 export function updateERC20BurnFromTransfer(event: Transfer): void {
-    const burn = getOrCreateERC20Burn(event)
+    const burn = getOrCreateERC20Burn(event, event.address)
     burn.amount = event.params.value;
     burn.token = getOrCreateERC20Token(event.address).id;
     burn.blockNumber = event.block.number;
@@ -42,7 +43,7 @@ export function updateERC20BurnFromTransfer(event: Transfer): void {
  * @param event: The PaymentBurnExecuted event that triggered the update
  */
 export function updateERC20BurnFromPayBurn(event: PaymentBurnExecuted): void {
-    const burn = getOrCreateERC20Burn(event)
+    const burn = getOrCreateERC20Burn(event, event.params.token)
     burn.amount = event.params.amount;
     burn.orderId = event.params.orderId;
     burn.token = getOrCreateERC20Token(event.params.token).id;
@@ -57,10 +58,10 @@ export function updateERC20BurnFromPayBurn(event: PaymentBurnExecuted): void {
  * @param event: The event that triggered the update
  * @returns ERC20Burn entity
  */
-export function getOrCreateERC20Burn(event: ethereum.Event): ERC20Burn {
+export function getOrCreateERC20Burn(event: ethereum.Event, token: Address): ERC20Burn {
     let burn = ERC20Burn.load(event.transaction.hash.toHexString())
     if (burn == null) {
-        burn = createERC20Burn(event)
+        burn = createERC20Burn(event, token)
     }
     return burn as ERC20Burn
 }
