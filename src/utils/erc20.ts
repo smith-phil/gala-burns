@@ -12,6 +12,7 @@ export function getOrCreateERC20Token(address: Address): ERC20Token {
     token.symbol = tokenContract.symbol()
     token.decimals = tokenContract.decimals()
     token.totalSupply = tokenContract.totalSupply()
+    token.initialTotalSupply = tokenContract.totalSupply() 
     token.save()
   }
   return token as ERC20Token
