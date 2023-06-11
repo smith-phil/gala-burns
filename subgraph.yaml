@@ -24,3 +24,23 @@ dataSources:
         - event: PaymentBurnExecuted(string,address,uint256,uint256)
           handler: handlePaymentBurnExecuted
       file: ./src/contract.ts
+  - kind: ethereum
+    name: Gala
+    network: mainnet
+    source:
+      address: "0xd1d2Eb1B1e90B638588728b4130137D262C87cae"
+      abi: IERC20Metadata
+      startBlock: 17081359
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: IERC20Metadata
+          file: ./abis/IERC20Metadata.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/common/mappings.ts

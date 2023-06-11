@@ -3,6 +3,9 @@
     "Contract": {
       "address": "0xb970026B8455776F803F89c37C5c7468a1DC50d3",
       "startBlock": 16220660
+    },
+    "Gala": {
+      "address": "0xd1d2Eb1B1e90B638588728b4130137D262C87cae"
     }
   }
 }
