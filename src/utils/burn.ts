@@ -147,3 +147,9 @@ export function updateERC20TotalSupply(token: Address, amount: BigInt): void {
     erc20Token.totalSupply = erc20Token.totalSupply.minus(amount)
     erc20Token.save()
 }
+
+export function addToERC20TotalSupply(token: Address, amount: BigInt): void {
+    const erc20Token = getOrCreateERC20Token(token)
+    erc20Token.totalSupply = erc20Token.totalSupply.plus(amount)
+    erc20Token.save()
+}   

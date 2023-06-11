@@ -24,7 +24,6 @@ type ERC20Token @entity {
   name: String!
   symbol: String!
   decimals: Int!
-  initialTotalSupply: BigInt!
   totalSupply: BigInt!
 }
 

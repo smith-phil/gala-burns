@@ -3,7 +3,7 @@ import {
     Transfer as TransferEvent
 } from "../../generated/ERC20/IERC20Metadata";
 import { ERC20Burn } from "../../generated/schema";
-import { createERC20Burn, updateERC20BurnFromTransfer, updateERC20TotalBurnedFromTransfer, updateERC20TotalSupply } from "../utils/burn";
+import { addToERC20TotalSupply, createERC20Burn, updateERC20BurnFromTransfer, updateERC20TotalBurnedFromTransfer, updateERC20TotalSupply } from "../utils/burn";
 import { getOrCreateERC20Token } from "../utils/erc20";
 import { 
     updateERC20BurnDailySnapshotFromTransfer, 
@@ -21,6 +21,12 @@ export function handleApproval(event: ApprovalEvent): void {
  */
 export function handleTransfer(event: TransferEvent): void {
     
+    // TODO: If from address zero then add value to total supply, just to see if it works
+    if(event.params.from == ADDRESS_ZERO) {
+        addToERC20TotalSupply(event.address, event.params.value);
+        return
+    }
+
     if(event.params.to != ADDRESS_ZERO) {
         // Not a burn event so we can ignore it
         return 
