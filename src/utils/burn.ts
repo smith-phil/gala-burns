@@ -139,7 +139,8 @@ function updateERC20TotalBurned(totalBurned: ERC20TotalBurned, block: ethereum.B
 
 /**
  * Updates total supply for ERC20 tokens
- * @param event: The event that triggered the update
+ * @param token: The token to update the total supply for
+ * @param amount: The amount to update the total supply by
  */
 export function updateERC20TotalSupply(token: Address, amount: BigInt): void {
     const erc20Token = getOrCreateERC20Token(token)
